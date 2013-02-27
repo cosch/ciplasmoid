@@ -31,10 +31,9 @@ Item {
 	}
 	
 	onAllOKChanged: {
-		var iconName = root.allOK ? "weather-clear" : "weather-storm"
+		var iconName = root.building ? "weather-windy" : (root.allOK ? "weather-clear" : "weather-storm")
 		plasmoid.setPopupIconByName(iconName)
-		var name = root.building ? "ktip" : (root.allOK ? "face-smile" : "emblem-important")
-		icon.setIcon(name)
+		icon.setIcon(iconName)
 		//icon.infoText= root.building ? "building" : (root.allOK ? "good" : "fail")
 		
 		console.debug("onAllOKChanged: " + iconName)
