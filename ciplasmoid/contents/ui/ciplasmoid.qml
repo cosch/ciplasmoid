@@ -1,14 +1,28 @@
 import QtQuick 1.0
+import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.plasma.core 0.1 as PlasmaCore
 import "citools.js" as CITools
 
 Item {
 	id: root
 	property bool allOK: true
+	property bool building: true
 	
 	property int minimumWidth: childrenRect.width
 	property int minimumHeight: childrenRect.height
-
+	
+	PlasmaWidgets.IconWidget {
+		id: icon
+		minimumIconSize: "16x16"
+		maximumIconSize: "128x128"
+		preferredIconSize: "32x32"
+		Component.onCompleted: setIcon("face-smile")
+		text: "foobar"
+		//infoText: root.allOK ? "good1" : "fail"
+		anchors.centerIn: parent
+	 }
+	
+	
 	Component.onCompleted: {
 		plasmoid.addEventListener('ConfigChanged', configChanged)
 
@@ -19,11 +33,17 @@ Item {
 	onAllOKChanged: {
 		var iconName = root.allOK ? "weather-clear" : "weather-storm"
 		plasmoid.setPopupIconByName(iconName)
+		var name = root.building ? "ktip" : (root.allOK ? "face-smile" : "emblem-important")
+		icon.setIcon(name)
+		//icon.infoText= root.building ? "building" : (root.allOK ? "good" : "fail")
+		
+		console.debug("onAllOKChanged: " + iconName)
 	}
 	
 	function configChanged() {
-		source = plasmoid.readConfig("ciServerUrl")
+		var source = plasmoid.readConfig("ciServerUrl")
 		dataSource.connectedSources = [source + "/rssLatest"]
+		CITools.setIconName(source+"")
 		console.debug("Source: " + source)
 	}
 	
@@ -42,9 +62,5 @@ Item {
 		running: true
 		repeat: false
 		onTriggered: root.configChanged()
-	}
-	
-	Text {
-		text: root.allOK ? "Everythings good" : "Some failures"
 	}
 }
