@@ -9,20 +9,25 @@ Item {
 	id: root
 	
 	property string state: "INVALID"
-
-	property string name: "name	"
+	property string name: "name"
 	
-	property int minimumWidth: childrenRect.width
-	property int minimumHeight: childrenRect.height
+	property int minimumWidth: 32//childrenRect.width
+	property int minimumHeight: 32// childrenRect.height
 	
 	PlasmaWidgets.IconWidget {
 		id: icon
 		onClicked: Qt.openUrlExternally( plasmoid.readConfig("ciServerUrl") ) 
 		minimumIconSize: "16x16"
-		maximumIconSize: "128x128"
+		//maximumIconSize: "128x128"
 		preferredIconSize: "32x32"
 		Component.onCompleted: setIcon("face-smile")
-		anchors.centerIn: parent
+		//anchors.centerIn: parent		
+		anchors {
+		  left: parent.left
+		  right: parent.right
+		  top: parent.top
+		  bottom: parent.bottom
+		}
 	 }
 	
 	
