@@ -27,6 +27,7 @@ Item {
 		  right: parent.right
 		  top: parent.top
 		  bottom: parent.bottom
+		  centerIn: parent
 		}
 	 }
 	
