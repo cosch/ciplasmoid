@@ -1,5 +1,7 @@
+import Qt 4.7
 import QtQuick 1.0
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+//import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
 import "citools.js" as CITools
 
@@ -13,6 +15,7 @@ Item {
 	
 	PlasmaWidgets.IconWidget {
 		id: icon
+		onClicked: Qt.openUrlExternally( plasmoid.readConfig("ciServerUrl") ) 
 		minimumIconSize: "16x16"
 		maximumIconSize: "128x128"
 		preferredIconSize: "32x32"
@@ -35,7 +38,6 @@ Item {
 		plasmoid.setPopupIconByName(iconName)
 		icon.setIcon(iconName)
 		//icon.infoText= root.building ? "building" : (root.allOK ? "good" : "fail")
-		
 		console.debug("onAllOKChanged: " + iconName)
 	}
 	
