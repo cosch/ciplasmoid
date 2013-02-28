@@ -7,8 +7,9 @@ import "citools.js" as CITools
 
 Item {
 	id: root
-	property bool allOK: true
-	property bool building: true
+	
+	property string state: "INVALID"
+
 	property string name: "name	"
 	
 	property int minimumWidth: childrenRect.width
@@ -21,35 +22,36 @@ Item {
 		maximumIconSize: "128x128"
 		preferredIconSize: "32x32"
 		Component.onCompleted: setIcon("face-smile")
-		//infoText: root.allOK ? "good1" : "fail"
 		anchors.centerIn: parent
 	 }
 	
 	
 	Component.onCompleted: {
 		plasmoid.addEventListener('ConfigChanged', configChanged)
-		root.allOK = false
-		root.allOK = true		
+		root.state=CITools.STATES.BUILDING.id
 	}
 	
 	function updateToolTip() {
 		var data = new Object
 		data["image"] = getIconName()
-		data["mainText"] = root.name+": "+(root.building ? "building" : (root.allOK ? "good" : "fail"))
+		data["mainText"] = root.name+": "+getStateText();
 		data["subText"] = plasmoid.readConfig("ciServerUrl")
 		plasmoid.popupIconToolTip = data	  
 	}
 	
-	function getIconName() {
-		var iconName = root.building ? "weather-windy" : (root.allOK ? "weather-clear" : "weather-storm")
-		return iconName
+	function getIconName() {		
+		return CITools.STATES[root.state].icon
 	}
 	
-	onAllOKChanged: {
+	function getStateText() {		
+		return CITools.STATES[root.state].name
+	}
+	
+	onStateChanged: {
 		var iconName =  getIconName()
                 plasmoid.setPopupIconByName(iconName)
                 icon.setIcon(iconName)
-                console.debug("onAllOKChanged: " + iconName)
+                console.debug("onStateChanged: " + iconName)
 		updateToolTip();	
 	}
 	

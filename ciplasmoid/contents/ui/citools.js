@@ -1,17 +1,25 @@
 // While a build is in progress the status is reported with a question mark
 var OKCodes = ["stable", "back to normal", "?"];
 
+var STATES = {
+	  INVALID: { id: -1, name: "", icon: ""},
+	  BUILDING: { id: 1, name: "building", icon: "emblem-rabbitvcs-locked"},
+	  OK: { id: 2, name: "ok", icon: "weather-clear"},
+	  FAIL: { id: 3, name: "failed", icon: "weather-storm"}
+	}
+	
 function handleItems(items) {
 	var jenkinsTitleRE = /(.*) #[0-9]+ \((.*)\)/;
-	var allOK = true;
+	
+	var state = "OK";		
 	var building = false;
-	root.building = false;
+	
 	for (var i in items) {
 		var result = jenkinsTitleRE.exec(items[i].title);
 		//console.debug("handleItems: " + items[i].title)
 		if (result) {
 			if (OKCodes.indexOf(result[2]) == -1) {
-				allOK = false;
+				state = "FAIL";
 			}
 			if ( result[2].localeCompare("?")==0 ) {
 				building = true;
@@ -20,10 +28,7 @@ function handleItems(items) {
 		}
 	}
 	
-	root.allOK = !allOK
-	root.allOK = allOK
-	root.building = !building
-	root.building = building
+	root.state=building ? "BUILDING" : state
 }
 
 function setIconName(source) {
