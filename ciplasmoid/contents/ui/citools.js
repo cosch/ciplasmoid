@@ -12,7 +12,7 @@ function handleItems(items) {
 			if (OKCodes.indexOf(result[2]) == -1) {
 				allOK = false;
 			}
-			if (OKCodes==result[2]) {
+			if ("?"==result[2]) {
 				root.building = true;
 			}
 		}
@@ -24,8 +24,10 @@ function handleItems(items) {
 
 function setIconName(source) {
 	var s = source.split("/");
+	var t = "";
 	for (var i in s) {		
 	  console.debug("s: " + s[i])
-	  icon.text = decodeURI(s[i])
+	  t = decodeURI(s[i])
 	}
+	root.name=t;	
 }
