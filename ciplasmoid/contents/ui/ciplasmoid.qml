@@ -14,9 +14,26 @@ Item {
 	property int minimumWidth: 32//childrenRect.width
 	property int minimumHeight: 32// childrenRect.height
 	
-	PlasmaWidgets.IconWidget {
+        PlasmaCore.Dialog {
+            id: dialog
+            //Set as a Tool window to bypass the taskbar
+            windowFlags: Qt.WindowStaysOnTopHint | Qt.Tool
+            visible: false
+            
+            onVisibleChanged: {
+                if(visible) {
+		}
+	    }
+	    
+	    mainItem: PlasmaWidgets.IconWidget  {
+                width: 250
+                height: 350
+	    }
+         }
+
+         PlasmaWidgets.IconWidget {
 		id: icon
-		onClicked: Qt.openUrlExternally( plasmoid.readConfig("ciServerUrl") ) 
+		onClicked: dialog.visible=!dialog.visible//Qt.openUrlExternally( plasmoid.readConfig("ciServerUrl") ) 
 		minimumIconSize: "16x16"
 		//maximumIconSize: "128x128"
 		preferredIconSize: "32x32"
