@@ -20,7 +20,7 @@ function handleItems(items) {
 		var thisbuild = false;
 		var result = jenkinsTitleRE.exec(items[i].title);
 		
-		console.debug("handleItems: " + items[i].title+":"+items[i].link+":")
+		//console.debug("handleItems: " + items[i].title+":"+items[i].link+":")
 		if (result) {
 			if (OKCodes.indexOf(result[2]) == -1) {
 				state = "FAIL";
@@ -33,7 +33,7 @@ function handleItems(items) {
 		}
 		
 		s = thisbuild ? "BUILDING" : thisstate 
-		console.debug("handleItems: state:"+STATES[s].name)
+		//console.debug("handleItems: state:"+STATES[s].name)
 		dialogModel.append( {"title":items[i].title, "link":items[i].link, "state":STATES[s].name} )
 	}
 	
@@ -44,7 +44,7 @@ function setIconName(source) {
 	var s = source.split("/");
 	var t = "";
 	for (var i in s) {		
-	  console.debug("s: " + s[i])
+	  //console.debug("s: " + s[i])
 	  t = decodeURI(s[i])
 	}
 	root.name=t;	
