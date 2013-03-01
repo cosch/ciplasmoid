@@ -48,7 +48,7 @@ Item {
 	    id: dialogHeading
 	    
 	    Rectangle {
-		width: container.width
+		width: dialog.width
 		height: childrenRect.height
 		color: "lightsteelblue"
 		Text {
@@ -102,13 +102,7 @@ Item {
 		preferredIconSize: "32x32"
 		Component.onCompleted: setIcon("face-smile")
 		//anchors.centerIn: parent		
-		anchors {
-		  left: parent.left
-		  right: parent.right
-		  top: parent.top
-		  bottom: parent.bottom
-		  centerIn: parent
-		}
+		
 	 }
 	
 	
@@ -116,6 +110,11 @@ Item {
 		plasmoid.addEventListener('ConfigChanged', configChanged)
 		root.state=CITools.STATES.BUILDING.id
 		plasmoid.setAction("contextOpen", "Open", "internet-web-browser");
+		icon.anchors.left = root.left
+		icon.anchors.right= root.right
+		icon.anchors.top= root.top
+		icon.anchors.bottom= root.bottom
+		//icon.anchors.centerIn= root
 	}
 	
 	onStateChanged: {
@@ -142,7 +141,8 @@ Item {
 	}
 	
 	function configChanged() {
-		root.source = "http://ci:8080/jenkins/view/PC_APPS_3M"//plasmoid.readConfig("ciServerUrl")		
+		root.source = plasmoid.readConfig("ciServerUrl")		
+		//root.source = "http://ci:8080/jenkins/view/PC_APPS_3M"
 		console.debug("configChanged: " + root.source)
 	}
 	
