@@ -38,21 +38,59 @@ Item {
 		 dialog.visible=!dialog.visible
 	}
 	
+	ListModel {
+	    id: dialogModel
+	    ListElement { title: "title"; link: "link"; state: "state" }
+	}
+	
+	 // The delegate for each section header
+	Component {
+	    id: dialogHeading
+	    
+	    Rectangle {
+		width: container.width
+		height: childrenRect.height
+		color: "lightsteelblue"
+		Text {
+		    text: section
+		    font.bold: true
+		    color: "white"
+		}
+	    }
+	}
+	
         PlasmaCore.Dialog {
             id: dialog
             //Set as a Tool window to bypass the taskbar
             windowFlags: Qt.WindowStaysOnTopHint|Qt.Tool
             visible: false
-            
             onVisibleChanged: {
                 if(visible) {
 		 
 		}
 	    }
 	    
-	    mainItem: PlasmaWidgets.IconWidget  {
-                width: 250
-                height: 350
+	    mainItem:  ListView {
+		width: 250
+		height: 250
+		id: entryList
+		
+		//anchors.fill: parent
+		//highlightMoveDuration: 300		
+
+		model: dialogModel
+		//highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+		focus: true
+		clip: true
+		
+		delegate: Text {
+		    text: title
+		    color: "white"
+		}
+
+		section.property: "state"
+		section.criteria: ViewSection.FullString
+		section.delegate: dialogHeading
 	    }
          }
 
@@ -119,3 +157,5 @@ Item {
 		onTriggered: root.configChanged()
 	}
 }
+
+

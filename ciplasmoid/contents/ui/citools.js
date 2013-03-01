@@ -13,19 +13,28 @@ function handleItems(items) {
 	
 	var state = "OK";		
 	var building = false;
+	dialogModel.clear()
 	
 	for (var i in items) {
+		var thisstate= "OK";
+		var thisbuild = false;
 		var result = jenkinsTitleRE.exec(items[i].title);
-		//console.debug("handleItems: " + items[i].title)
+		
+		console.debug("handleItems: " + items[i].title+":"+items[i].link+":")
 		if (result) {
 			if (OKCodes.indexOf(result[2]) == -1) {
 				state = "FAIL";
+				thisstate = state;
 			}
 			if ( result[2].localeCompare("?")==0 ) {
 				building = true;
-				console.debug("handleItems: building")
+				thisbuild=building;
 			}
 		}
+		
+		s = thisbuild ? "BUILDING" : thisstate 
+		console.debug("handleItems: state:"+STATES[s].name)
+		dialogModel.append( {"title":items[i].title, "link":items[i].link, "state":STATES[s].name} )
 	}
 	
 	root.state=building ? "BUILDING" : state
