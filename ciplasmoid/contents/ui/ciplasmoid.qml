@@ -8,7 +8,7 @@ import "citools.js" as CITools
 Item {
 	id: root
 	
-	property string state: "INVALID"
+	property string state: "FAIL"
 	property string name: "name"
 	property string source: "source"
 	
@@ -50,7 +50,7 @@ Item {
 	    Rectangle {
 		width: dialog.width
 		height: childrenRect.height
-		color: "lightsteelblue"
+		color: "lightgray"
 		Text {
 		    text: section
 		    font.bold: true
@@ -74,7 +74,7 @@ Item {
 		width: 250
 		height: 250
 		id: entryList
-		
+		  
 		//anchors.fill: parent
 		//highlightMoveDuration: 300		
 
@@ -121,13 +121,15 @@ Item {
 		var iconName =  getIconName()
                 plasmoid.setPopupIconByName(iconName)
                 icon.setIcon(iconName)
-                console.debug("onStateChanged: " + iconName)
+                //console.debug("onStateChanged: " + iconName)
 		updateToolTip();
-		if( root.state== CITool.STATES["BUILDING"]) {
+		/*if( root.state== "BUILDING") {
+		    console.debug("building state: updating more often")
 		    dataSource.interval=30*1000
 		} else {
+		    console.debug("normal: updating normal")
 		    dataSource.interval=60*1000
-		} 
+		}*/
 	}
 	
 	onNameChanged: {
@@ -137,13 +139,13 @@ Item {
 	onSourceChanged: {
 		dataSource.connectedSources = [root.source + "/rssLatest"]
 		CITools.setIconName(root.source+"")
-		console.debug("Source: " + root.source)
+		//console.debug("Source: " + root.source)
 	}
 	
 	function configChanged() {
 		root.source = plasmoid.readConfig("ciServerUrl")		
-		//root.source = "http://ci:8080/jenkins/view/PC_APPS_3M"
-		console.debug("configChanged: " + root.source)
+		root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		//console.debug("configChanged: " + root.source)
 	}
 	
 	function action_contextOpen() {
@@ -154,8 +156,10 @@ Item {
 		id: dataSource
 		engine: "rss"
 		interval: 60 * 1000
+		cache: false
 		
 		onNewData: {
+			console.debug("have new data..")
 			CITools.handleItems(data["items"])
 		}
 	}

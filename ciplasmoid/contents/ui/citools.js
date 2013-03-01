@@ -20,7 +20,7 @@ function handleItems(items) {
 		var thisbuild = false;
 		var result = jenkinsTitleRE.exec(items[i].title);
 		
-		//console.debug("handleItems: " + items[i].title+":"+items[i].link+":")
+		console.debug("handleItems: " + items[i].title)//+":"+items[i].link+":")
 		if (result) {
 			if (OKCodes.indexOf(result[2]) == -1) {
 				state = "FAIL";
@@ -29,6 +29,7 @@ function handleItems(items) {
 			if ( result[2].localeCompare("?")==0 ) {
 				building = true;
 				thisbuild=building;
+				//console.debug("building...")
 			}
 		}
 		
