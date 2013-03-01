@@ -1,7 +1,7 @@
 import Qt 4.7
 import QtQuick 1.0
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
-//import org.kde.plasma.components 0.1 as PlasmaComponents
+import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
 import "citools.js" as CITools
 
@@ -115,6 +115,7 @@ Item {
 	Component.onCompleted: {
 		plasmoid.addEventListener('ConfigChanged', configChanged)
 		root.state=CITools.STATES.BUILDING.id
+		plasmoid.setAction("contextOpen", "Open", "internet-web-browser");
 	}
 	
 	onStateChanged: {
@@ -122,7 +123,12 @@ Item {
                 plasmoid.setPopupIconByName(iconName)
                 icon.setIcon(iconName)
                 console.debug("onStateChanged: " + iconName)
-		updateToolTip();	
+		updateToolTip();
+		if( root.state== CITool.STATES["BUILDING"]) {
+		    dataSource.interval=30*1000
+		} else {
+		    dataSource.interval=60*1000
+		} 
 	}
 	
 	onNameChanged: {
@@ -138,6 +144,10 @@ Item {
 	function configChanged() {
 		root.source = "http://ci:8080/jenkins/view/PC_APPS_3M"//plasmoid.readConfig("ciServerUrl")		
 		console.debug("configChanged: " + root.source)
+	}
+	
+	function action_contextOpen() {
+		Qt.openUrlExternally( root.source ) 
 	}
 	
 	PlasmaCore.DataSource {
