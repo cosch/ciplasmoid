@@ -10,18 +10,43 @@ Item {
 	
 	property string state: "INVALID"
 	property string name: "name"
+	property string source: "source"
 	
 	property int minimumWidth: 32//childrenRect.width
 	property int minimumHeight: 32// childrenRect.height
 	
+	function updateToolTip() {
+		var data = new Object
+		data["image"] = getIconName()
+		data["mainText"] = root.name+": "+getStateText();
+		data["subText"] = root.source
+		plasmoid.popupIconToolTip = data	  
+	}
+	
+	function getIconName() {		
+		return CITools.STATES[root.state].icon
+	}
+	
+	function getStateText() {		
+		return CITools.STATES[root.state].name
+	}
+	
+	function toggleDialog() {
+		 point = dialog.popupPosition(root)
+		 dialog.x= point.x
+		 dialog.y= point.y
+		 dialog.visible=!dialog.visible
+	}
+	
         PlasmaCore.Dialog {
             id: dialog
             //Set as a Tool window to bypass the taskbar
-            windowFlags: Qt.WindowStaysOnTopHint | Qt.Tool
+            windowFlags: Qt.WindowStaysOnTopHint|Qt.Tool
             visible: false
             
             onVisibleChanged: {
                 if(visible) {
+		 
 		}
 	    }
 	    
@@ -33,7 +58,7 @@ Item {
 
          PlasmaWidgets.IconWidget {
 		id: icon
-		onClicked: dialog.visible=!dialog.visible//Qt.openUrlExternally( plasmoid.readConfig("ciServerUrl") ) 
+		onClicked: toggleDialog()//Qt.openUrlExternally( plasmoid.readConfig("ciServerUrl") ) 
 		minimumIconSize: "16x16"
 		//maximumIconSize: "128x128"
 		preferredIconSize: "32x32"
@@ -54,22 +79,6 @@ Item {
 		root.state=CITools.STATES.BUILDING.id
 	}
 	
-	function updateToolTip() {
-		var data = new Object
-		data["image"] = getIconName()
-		data["mainText"] = root.name+": "+getStateText();
-		data["subText"] = plasmoid.readConfig("ciServerUrl")
-		plasmoid.popupIconToolTip = data	  
-	}
-	
-	function getIconName() {		
-		return CITools.STATES[root.state].icon
-	}
-	
-	function getStateText() {		
-		return CITools.STATES[root.state].name
-	}
-	
 	onStateChanged: {
 		var iconName =  getIconName()
                 plasmoid.setPopupIconByName(iconName)
@@ -82,11 +91,15 @@ Item {
 		updateToolTip()
 	}	
 	
+	onSourceChanged: {
+		dataSource.connectedSources = [root.source + "/rssLatest"]
+		CITools.setIconName(root.source+"")
+		console.debug("Source: " + root.source)
+	}
+	
 	function configChanged() {
-		var source = plasmoid.readConfig("ciServerUrl")
-		dataSource.connectedSources = [source + "/rssLatest"]
-		CITools.setIconName(source+"")
-		console.debug("Source: " + source)
+		root.source = "http://ci:8080/jenkins/view/PC_APPS_3M"//plasmoid.readConfig("ciServerUrl")		
+		console.debug("configChanged: " + root.source)
 	}
 	
 	PlasmaCore.DataSource {
