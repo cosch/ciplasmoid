@@ -5,7 +5,7 @@ var DLEVELS = {
     NONE: { value: 3}
 };
 
-var DLEVEL="NONE";
+var DLEVEL="DETAILS";
 
 function debugout( level, str ) {
   if( true ) {
@@ -38,7 +38,7 @@ function handleItems(items) {
 	
 	var state = "OK";		
 	var building = false;
-	
+	var allunseen=0;
 	//dialogModel.clear()
 	
 	for (var i in items) {
@@ -78,16 +78,16 @@ function handleItems(items) {
 		debugout("DETAILS", "   index:" + index)
 		olditem = dialogModel.get(index)
 		
-		unseen = 0
+		myunseen = 0
 		if( index >=0 ) {
-		  unseen += number-olditem.number;
-		  unseen += olditem.unseen
+		  myunseen += number-olditem.number;
+		  myunseen += olditem.unseen
 		  debugout("DETAILS", "   oldnumber"+olditem.number)
 		  debugout("DETAILS", "   newnumber"+number)
 		}
-		debugout("INFO"," =" + unseen)
+		debugout("INFO"," =" + myunseen)
 		
-		newitem = {"title":name, "link":items[i].link, "state": STATES[s].name, "number": number, "unseen": unseen}		
+		newitem = {"title":name, "link":items[i].link, "state": STATES[s].name, "number": number, "unseen": myunseen}		
 		
 		if( index >= 0) {
 		  dialogModel.set(index,newitem)
@@ -95,9 +95,11 @@ function handleItems(items) {
 		else {
 		  dialogModel.append( newitem )
 		}
+		allunseen +=  myunseen
 	}
 
 	root.state=building ? "BUILDING" : state
+	root.unseen = parseInt(root.unseen)+allunseen
 }
 
 function setName(source) {

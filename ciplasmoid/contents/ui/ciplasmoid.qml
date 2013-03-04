@@ -11,6 +11,7 @@ Item {
 	property string state: "FAIL"
 	property string name: "name"
 	property string source: "source"
+	property string unseen: "2323"
 	
 	property int minimumWidth: 32//childrenRect.width
 	property int minimumHeight: 32// childrenRect.height
@@ -176,6 +177,10 @@ Item {
 		updateToolTip()
 	}	
 	
+	onUnseenChanged: {
+		CITools.debugout("INFO","global Unseen: " + root.unseen)
+	}
+	
 	onSourceChanged: {
 		dataSource.connectedSources = [root.source + "/rssLatest"]
 		CITools.setName(root.source+"")
@@ -184,7 +189,7 @@ Item {
 	
 	function configChanged() {
 		root.source = plasmoid.readConfig("ciServerUrl")		
-		//root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
 		CITools.debugout("DEBUG","configChanged: " + root.source)
 	}
 	
