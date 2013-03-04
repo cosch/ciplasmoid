@@ -5,7 +5,7 @@ var DLEVELS = {
     NONE: { value: 3}
 };
 
-var DLEVEL="DETAILS";
+var DLEVEL="INFO";
 
 function debugout( level, str ) {
   if( true ) {
@@ -19,9 +19,9 @@ var OKCodes = ["stable", "back to normal", "?"];
 
 var STATES = {
 	  INVALID: { id: -1, name: "", icon: ""},
-	  BUILDING: { id: 1, name: "building", icon: "emblem-rabbitvcs-locked"},
-	  OK: { id: 2, name: "ok", icon: "weather-clear"},
-	  FAIL: { id: 3, name: "failed", icon: "weather-storm"}
+	  BUILDING: { id: 1, name: "building", icon: "run-build", file: "../images/run-build.png"},
+	  OK: { id: 2, name: "ok", icon: "weather-clear", file: "../images/success.png"},
+	  FAIL: { id: 3, name: "failed", icon: "weather-storm", file: "../images/failure.png"}
 	}
 	
 function getListModelIndexByTitle( title ) {
@@ -36,7 +36,7 @@ function handleItems(items) {
 	var jenkinsTitleStateRE = /(.*) #[0-9]+ \((.*)\)/;
 	var jenkinsTitleNumberRE = /#([0-9]+)/;
 	
-	var state = "OK";		
+	var allstate = "OK";		
 	var building = false;
 	var allunseen=0;
 	//dialogModel.clear()
@@ -54,8 +54,8 @@ function handleItems(items) {
 		if (result) {
 			debugout("DEBUG", " " + result)
 			if (OKCodes.indexOf(result[2]) == -1) {
-				state = "FAIL";
-				thisstate = state;
+				allstate = "FAIL";
+				thisstate = allstate;
 			}
 			if ( result[2].localeCompare("?")==0 ) {
 				building = true;
@@ -72,7 +72,7 @@ function handleItems(items) {
 			number = parseInt( result[1],10 )	
 		}
 		
-		s = thisbuild ? "BUILDING" : thisstate 
+		mystate = thisbuild ? "BUILDING" : thisstate 
 		
 		index = getListModelIndexByTitle( name )
 		debugout("DETAILS", "   index:" + index)
@@ -85,9 +85,9 @@ function handleItems(items) {
 		  debugout("DETAILS", "   oldnumber"+olditem.number)
 		  debugout("DETAILS", "   newnumber"+number)
 		}
-		debugout("INFO"," =" + myunseen)
+		debugout("INFO"," =" + myunseen+" ->"+mystate)
 		
-		newitem = {"title":name, "link":items[i].link, "state": STATES[s].name, "number": number, "unseen": myunseen}		
+		newitem = {"title":name, "link":items[i].link, "jobstate": mystate, "number": number, "unseen": myunseen}		
 		
 		if( index >= 0) {
 		  dialogModel.set(index,newitem)
@@ -98,7 +98,7 @@ function handleItems(items) {
 		allunseen +=  myunseen
 	}
 
-	root.state=building ? "BUILDING" : state
+	root.state=building ? "BUILDING" : allstate
 	root.unseen = parseInt(root.unseen)+allunseen
 }
 

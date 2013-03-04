@@ -3,6 +3,7 @@ import QtQuick 1.0
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
+import org.kde.plasma.extras 0.1 as PlasmaExtras
 import "citools.js" as CITools
 
 Item {
@@ -41,15 +42,15 @@ Item {
 	
 	ListModel {
 	    id: dialogModel
-	    ListElement { title: "title"; link: "link"; state: "state"; number: 23; unseen: 42 }
+	    ListElement { title: "title"; link: "link"; jobstate: "state"; number: 23; unseen: 42 }
 	}
 	
 	 // The delegate for each section header
 	Component {
 	    id: listHeading
 	    Rectangle {
-		width: 0
-		height: 0
+	    	width: 0
+	    	height: 0
 	    }    
 	//    Rectangle {
 	//	width: dialog.width
@@ -71,23 +72,13 @@ Item {
 
                  Row {
                     Column {
+		        height: 40
                         width: 32
                         Image {
-                          id: itemBtn
-                          source: "../images/success.png"
+                          id: itemBtn                          
+                          source: CITools.STATES[jobstate].file
                           MouseArea {
-                              anchors.fill: parent;
-                              onEntered: {
-                                  itemBtn.source= "../images/failure.png";
-                              }
-
-                              onExited: {
-                                    itemBtn.source= "../images/success.png";
-                              }
-
-                              onCanceled: {
-                                    itemBtn.source= "../images/failure.png";
-                              }
+                              anchors.fill: parent;                             
 
                               onClicked:{
                                   CITools.debugout("DETAILS"," dialog item clicked:"+ index);
@@ -99,7 +90,7 @@ Item {
                     Column {
                          width: listDelegate.width-40; height: 40;
                          Text { text: title; color: "white"; font.pixelSize: parent.height / 4}
-                         Text { text: unseen; color: "white"; font.pixelSize: parent.height / 4 }
+                         Text { text:  jobstate; color: "white"; font.pixelSize: parent.height / 4 }
                     }
 		 }
              }
@@ -116,28 +107,34 @@ Item {
 		}
 	    }
 	    
-	    mainItem:  ListView {
+	    mainItem: PlasmaExtras.ScrollArea {
+		id: scrollArea
 		width: 250
 		height: 250
-		id: entryList
-		  
-		//anchors.fill: parent
-		//highlightMoveDuration: 300		
+		ListView {
+		    width: parent.width
+		    height: parent.height
+		    id: entryList
+		      
+		    //anchors.fill: parent
+		    //highlightMoveDuration: 300		
 
-		model: dialogModel
-		//highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-		focus: true
-		clip: true
-		
-		delegate: listDelegate
-		//Text {
-		//    text: title
-		//    color: "white"
-		//}
+		    model: dialogModel
+		    //highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+		    focus: true
+		    clip: true
+		    
+		    delegate: listDelegate
+		    //Text {
+		    //    text: title
+		    //    color: "white"
+		    //}
 
-		section.property: "state"
-		section.criteria: ViewSection.FullString
-		section.delegate: listHeading
+		    section.property: "jobstate"
+		    section.criteria: ViewSection.FullString
+		    section.delegate: listHeading
+		    
+		}
 	    }
          }
 
@@ -189,7 +186,8 @@ Item {
 	
 	function configChanged() {
 		root.source = plasmoid.readConfig("ciServerUrl")		
-		root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		//root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		root.source = "https://ci.jenkins-ci.org/view/All"
 		CITools.debugout("DEBUG","configChanged: " + root.source)
 	}
 	
