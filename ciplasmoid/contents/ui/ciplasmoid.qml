@@ -40,25 +40,70 @@ Item {
 	
 	ListModel {
 	    id: dialogModel
-	    ListElement { title: "title"; link: "link"; state: "state" }
+	    ListElement { title: "title"; link: "link"; state: "state"; number: 23; unseen: 42 }
 	}
 	
 	 // The delegate for each section header
 	Component {
-	    id: dialogHeading
-	    
+	    id: listHeading
 	    Rectangle {
-		width: dialog.width
-		height: childrenRect.height
-		color: "lightgray"
-		Text {
-		    text: section
-		    font.bold: true
-		    color: "white"
-		}
-	    }
+		width: 0
+		height: 0
+	    }    
+	//    Rectangle {
+	//	width: dialog.width
+	//	height: childrenRect.height
+	//	color: "lightgray"
+	//	Text {
+	//	    text: section
+	//	    font.bold: true
+	//	    color: "white"
+	//	}
+	//    }
 	}
 	
+	Component {
+             id: listDelegate
+
+             Item {
+                 width: parent.width; height: 40
+
+                 Row {
+                    Column {
+                        width: 32
+                        Image {
+                          id: itemBtn
+                          source: "../images/success.png"
+                          MouseArea {
+                              anchors.fill: parent;
+                              onEntered: {
+                                  itemBtn.source= "../images/failure.png";
+                              }
+
+                              onExited: {
+                                    itemBtn.source= "../images/success.png";
+                              }
+
+                              onCanceled: {
+                                    itemBtn.source= "../images/failure.png";
+                              }
+
+                              onClicked:{
+                                  console.debug("clicked:"+ index);
+                                  listView.currentIndex = index;
+                              }
+                          }
+                       }
+                    }
+                    Column {
+                         width: listDelegate.width-40; height: 40;
+                         Text { text: title; color: "white"; font.pixelSize: parent.height / 4}
+                         Text { text: unseen; color: "white"; font.pixelSize: parent.height / 4 }
+                    }
+		 }
+             }
+         }  
+         
         PlasmaCore.Dialog {
             id: dialog
             //Set as a Tool window to bypass the taskbar
@@ -83,14 +128,15 @@ Item {
 		focus: true
 		clip: true
 		
-		delegate: Text {
-		    text: title
-		    color: "white"
-		}
+		delegate: listDelegate
+		//Text {
+		//    text: title
+		//    color: "white"
+		//}
 
 		section.property: "state"
 		section.criteria: ViewSection.FullString
-		section.delegate: dialogHeading
+		section.delegate: listHeading
 	    }
          }
 
@@ -115,6 +161,7 @@ Item {
 		icon.anchors.top= root.top
 		icon.anchors.bottom= root.bottom
 		//icon.anchors.centerIn= root
+		dialogModel.clear()
 	}
 	
 	onStateChanged: {
@@ -138,7 +185,7 @@ Item {
 	
 	onSourceChanged: {
 		dataSource.connectedSources = [root.source + "/rssLatest"]
-		CITools.setIconName(root.source+"")
+		CITools.setName(root.source+"")
 		//console.debug("Source: " + root.source)
 	}
 	
@@ -156,7 +203,6 @@ Item {
 		id: dataSource
 		engine: "rss"
 		interval: 60 * 1000
-		cache: false
 		
 		onNewData: {
 			console.debug("have new data..")
