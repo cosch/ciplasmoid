@@ -12,10 +12,10 @@ Item {
 	property string state: "FAIL"
 	property string name: "name"
 	property string source: "source"
-	property string unseen: "2323"
+	property string unseen: "0"
 	
-	property int minimumWidth: 32//childrenRect.width
-	property int minimumHeight: 32// childrenRect.height
+	property int minimumWidth: 46//childrenRect.width
+	property int minimumHeight: 46// childrenRect.height
 	
 	function updateToolTip() {
 		var data = new Object
@@ -72,9 +72,10 @@ Item {
 
                  Row {
                     Column {
-		        height: 40
-                        width: 32
-                        Image {
+		        Image {
+			  height: 32
+			  width: 32
+                        
                           id: itemBtn                          
                           source: CITools.STATES[jobstate].file
                           MouseArea {
@@ -88,7 +89,7 @@ Item {
                        }
                     }
                     Column {
-                         width: listDelegate.width-40; height: 40;
+                         width: listDelegate.width-40; height: 32;
                          Text { text: title; color: "white"; font.pixelSize: parent.height / 4}
                          Text { text:  jobstate; color: "white"; font.pixelSize: parent.height / 4 }
                     }
@@ -149,7 +150,32 @@ Item {
 		
 	 }
 	
-	
+	 Item  {
+		width: root.width > 64 ? 32 : 24
+		height: root.width > 64 ? 32 : 24
+		
+		Image {        
+			id: unseenStar  
+			source: "../images/draw-star.png"
+			width: root.width > 64 ? 32 : 24
+			height: root.width > 64 ? 32 : 24
+			visible: false
+			MouseArea {
+			    anchors.fill: parent;                             
+
+			    onClicked:{
+				root.unseen=0
+			    }
+			}
+			Text {
+			    anchors.fill: parent; 
+			    horizontalAlignment: Text.AlignHCenter
+			    verticalAlignment: 	Text.AlignVCenter
+			    text: root.unseen
+			    color: "red"
+			}
+		}
+	 }
 	Component.onCompleted: {
 		plasmoid.addEventListener('ConfigChanged', configChanged)
 		root.state=CITools.STATES.BUILDING.id
@@ -176,6 +202,7 @@ Item {
 	
 	onUnseenChanged: {
 		CITools.debugout("INFO","global Unseen: " + root.unseen)
+		unseenStar.visible= ( parseInt(root.unseen,10)>0 )  
 	}
 	
 	onSourceChanged: {

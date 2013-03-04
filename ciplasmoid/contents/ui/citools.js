@@ -80,10 +80,10 @@ function handleItems(items) {
 		
 		myunseen = 0
 		if( index >=0 ) {
-		  myunseen += number-olditem.number;
-		  myunseen += olditem.unseen
-		  debugout("DETAILS", "   oldnumber"+olditem.number)
-		  debugout("DETAILS", "   newnumber"+number)
+			myunseen += number-olditem.number;
+			myunseen += olditem.unseen
+			debugout("DETAILS", "   oldnumber"+olditem.number)
+			debugout("DETAILS", "   newnumber"+number)
 		}
 		debugout("INFO"," =" + myunseen+" ->"+mystate)
 		
@@ -99,7 +99,7 @@ function handleItems(items) {
 	}
 
 	root.state=building ? "BUILDING" : allstate
-	root.unseen = parseInt(root.unseen)+allunseen
+	root.unseen = parseInt(root.unseen)+allunseen+1
 }
 
 function setName(source) {
