@@ -89,8 +89,8 @@ Item {
                               }
 
                               onClicked:{
-                                  console.debug("clicked:"+ index);
-                                  listView.currentIndex = index;
+                                  CITools.debugout("DETAILS"," dialog item clicked:"+ index);
+                                  entryList.currentIndex = index;
                               }
                           }
                        }
@@ -168,15 +168,8 @@ Item {
 		var iconName =  getIconName()
                 plasmoid.setPopupIconByName(iconName)
                 icon.setIcon(iconName)
-                //console.debug("onStateChanged: " + iconName)
-		updateToolTip();
-		/*if( root.state== "BUILDING") {
-		    console.debug("building state: updating more often")
-		    dataSource.interval=30*1000
-		} else {
-		    console.debug("normal: updating normal")
-		    dataSource.interval=60*1000
-		}*/
+                
+		updateToolTip();		
 	}
 	
 	onNameChanged: {
@@ -186,13 +179,13 @@ Item {
 	onSourceChanged: {
 		dataSource.connectedSources = [root.source + "/rssLatest"]
 		CITools.setName(root.source+"")
-		//console.debug("Source: " + root.source)
+		CITools.debugout("INFO","Source: " + root.source)
 	}
 	
 	function configChanged() {
 		root.source = plasmoid.readConfig("ciServerUrl")		
-		root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
-		//console.debug("configChanged: " + root.source)
+		//root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		CITools.debugout("DEBUG","configChanged: " + root.source)
 	}
 	
 	function action_contextOpen() {
@@ -205,7 +198,7 @@ Item {
 		interval: 60 * 1000
 		
 		onNewData: {
-			console.debug("have new data..")
+			CITools.debugout("INFO","have new data..")
 			CITools.handleItems(data["items"])
 		}
 	}

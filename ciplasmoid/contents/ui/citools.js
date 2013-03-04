@@ -1,3 +1,19 @@
+var DLEVELS = { 
+    DETAILS:{ value: 0},
+    DEBUG: { value: 1 },
+    INFO: { value: 2},
+    NONE: { value: 3}
+};
+
+var DLEVEL="NONE";
+
+function debugout( level, str ) {
+  if( true ) {
+      if( DLEVELS[DLEVEL].value<=DLEVELS[level].value )
+	console.debug( str )
+  }
+}
+
 // While a build is in progress the status is reported with a question mark
 var OKCodes = ["stable", "back to normal", "?"];
 
@@ -13,6 +29,7 @@ function getListModelIndexByTitle( title ) {
 	  if( title.localeCompare(dialogModel.get(i).title)==0 )
 	    return i;
 	}
+	return -1;
 }
 	
 function handleItems(items) {
@@ -25,17 +42,17 @@ function handleItems(items) {
 	//dialogModel.clear()
 	
 	for (var i in items) {
-		console.debug("handleItems: " + items[i].title)
+		debugout("INFO", "handleItems: " + items[i].title)
 		
 		var thisstate= "OK";
 		var thisbuild = false;
 		var result = jenkinsTitleStateRE.exec(items[i].title);
-		var number = "0"
+		var number = 0
 		var name = ""
 		
 		// parse status
 		if (result) {
-			console.debug(" " + result)
+			debugout("DEBUG", " " + result)
 			if (OKCodes.indexOf(result[2]) == -1) {
 				state = "FAIL";
 				thisstate = state;
@@ -43,30 +60,32 @@ function handleItems(items) {
 			if ( result[2].localeCompare("?")==0 ) {
 				building = true;
 				thisbuild=building;
-				//console.debug("building...")
 			}
 			name = result[1]
-			console.debug(" " + name)
+			debugout("DETAILS", " " + name)
 		}
 		
 		// parse buildnumber
 		var result = items[i].title.match(jenkinsTitleNumberRE);		
 		if (result) {
-			console.debug(" " + result[1])
-			number = parseInt( result[1] )	
+			debugout("DETAILS", " " + result[1])
+			number = parseInt( result[1],10 )	
 		}
 		
 		s = thisbuild ? "BUILDING" : thisstate 
 		
-		index = getListModelIndexByTitle( items[i].title )
+		index = getListModelIndexByTitle( name )
+		debugout("DETAILS", "   index:" + index)
 		olditem = dialogModel.get(index)
 		
 		unseen = 0
 		if( index >=0 ) {
 		  unseen += number-olditem.number;
 		  unseen += olditem.unseen
+		  debugout("DETAILS", "   oldnumber"+olditem.number)
+		  debugout("DETAILS", "   newnumber"+number)
 		}
-		console.debug(" =" + unseen)
+		debugout("INFO"," =" + unseen)
 		
 		newitem = {"title":name, "link":items[i].link, "state": STATES[s].name, "number": number, "unseen": unseen}		
 		
@@ -85,7 +104,7 @@ function setName(source) {
 	var s = source.split("/");
 	var t = "";
 	for (var i in s) {		
-	  //console.debug("s: " + s[i])
+	  //debugout("s: " + s[i])
 	  t = decodeURI(s[i])
 	}
 	root.name=t;	
