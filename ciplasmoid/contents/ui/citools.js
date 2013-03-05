@@ -92,6 +92,11 @@ function handleItems(items) {
 		}
 		debugout("INFO"," =" + myunseen+" ->"+mystate)
 		
+		if( index==0 && !isRelease() ) {
+		  //debug interaction
+		  myunseen +=1
+		}
+		
 		newitem = {"title":name, "link":items[i].link, "jobstate": mystate, "number": number, "unseen": myunseen}		
 		
 		if( index >= 0) {
@@ -101,10 +106,6 @@ function handleItems(items) {
 		  dialogModel.append( newitem )
 		}
 		allunseen +=  myunseen
-	}
-	
-	if( !isRelease() ) {
-	  allunseen +=1
 	}
 	
 	root.state=building ? "BUILDING" : allstate

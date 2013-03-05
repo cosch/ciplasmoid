@@ -93,6 +93,7 @@ Item {
 				    onClicked:{
 					CITools.debugout("DETAILS"," dialog item clicked:"+ index);
 					listView.currentIndex = index;
+					root.unseen = (parseInt(root.unseen)-dialogModel.get(index).unseen)
 					dialogModel.get(index).unseen=0 
 				    }
 				}
