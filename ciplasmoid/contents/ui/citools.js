@@ -37,6 +37,22 @@ function getListModelIndexByTitle( title ) {
 	return -1;
 }
 	
+function sortDialogModel() {
+    var n;
+    var i;
+    for (n=0; n < dialogModel.count; n++)
+    for (i=n+1; i < dialogModel.count; i++)
+    {
+	debugout("DETAILS", " sort?:" + STATES[dialogModel.get(n).jobstate].name +"?"+STATES[dialogModel.get(i).jobstate].name)
+	if (STATES[dialogModel.get(n).jobstate].id < STATES[dialogModel.get(i).jobstate].id)
+        {
+	    debugout("DETAILS", " moved!")
+	    dialogModel.move(n, i, 1);
+            n=0; // Repeat at start since I can't swap items i and n
+        }
+    }
+}
+
 function handleItems(items) {
 	var jenkinsTitleStateRE = /(.*) #[0-9]+ \((.*)\)/;
 	var jenkinsTitleNumberRE = /#([0-9]+)/;
@@ -110,6 +126,7 @@ function handleItems(items) {
 	
 	root.state=building ? "BUILDING" : allstate
 	root.unseen = allunseen
+	sortDialogModel();
 }
 
 function setName(source) {

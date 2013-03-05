@@ -53,20 +53,20 @@ Item {
 	 // The delegate for each section header
 	Component {
 	    id: listHeading
-	    Rectangle {
-	    	width: 0
-	    	height: 0
-	    }    
 	//    Rectangle {
-	//	width: dialog.width
-	//	height: childrenRect.height
-	//	color: "lightgray"
-	//	Text {
-	//	    text: section
-	//	    font.bold: true
-	//	    color: "white"
-	//	}
-	//    }
+	//    	width: 0
+	//    	height: 0
+	//    }    
+	    Rectangle {
+		width: dialog.width
+		height: childrenRect.height
+		color: "lightgray"
+		Text {
+		    text: section
+		    font.bold: true
+		    color: "white"
+		}
+	    }
 	}
 	
 	Component {
@@ -114,11 +114,11 @@ Item {
 			 Text { text: title; color: "white"; font.pixelSize: detailColumn.height / 3}
                          Row {
 			    Column {
-			      width: listDelegate.width-80; 
+			      width: listDelegate.width-80
 			      Text { text:  number; color: "white"; font.pixelSize: detailColumn.height / 4; horizontalAlignment: Text.AlignHLeft}
 			    }
 			    Column {
-			      width: listDelegate.width-200; 
+			      width: listDelegate.width-120
 			      Text { text:  jobstate; color: "white"; font.pixelSize: detailColumn.height / 4; horizontalAlignment: Text.AlignHRight }
 			    }
 			 }
@@ -256,8 +256,8 @@ Item {
 		root.source = plasmoid.readConfig("ciServerUrl")
 		
 		if( !CITools.isRelease() ) {
-		  root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
-		  //root.source = "https://ci.jenkins-ci.org/view/All"
+		  //root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		  root.source = "https://ci.jenkins-ci.org/view/All"
 		}
 		
 		CITools.debugout("DEBUG","configChanged: " + root.source)
