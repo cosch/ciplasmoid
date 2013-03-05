@@ -92,7 +92,7 @@ Item {
 
 				    onClicked:{
 					CITools.debugout("DETAILS"," dialog item clicked:"+ index);
-					entryList.currentIndex = index;
+					listView.currentIndex = index;
 				    }
 				}
 			    }
@@ -107,9 +107,19 @@ Item {
 			}
                     }
                     Column {
+			 id: detailColumn
                          width: listDelegate.width-40; height: 32;
-                         Text { text: title; color: "white"; font.pixelSize: parent.height / 3}
-                         Text { text:  number; color: "white"; font.pixelSize: parent.height / 4 }
+			 Text { text: title; color: "white"; font.pixelSize: detailColumn.height / 3}
+                         Row {
+			    Column {
+			      width: listDelegate.width-80; 
+			      Text { text:  number; color: "white"; font.pixelSize: detailColumn.height / 4; horizontalAlignment: Text.AlignHLeft}
+			    }
+			    Column {
+			      width: listDelegate.width-200; 
+			      Text { text:  jobstate; color: "white"; font.pixelSize: detailColumn.height / 4; horizontalAlignment: Text.AlignHRight }
+			    }
+			 }
                     }
 		 }
              }
@@ -133,7 +143,7 @@ Item {
 		ListView {
 		    width: parent.width
 		    height: parent.height
-		    id: entryList
+		    id: listView
 		      
 		    //anchors.fill: parent
 		    //highlightMoveDuration: 300		

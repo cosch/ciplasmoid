@@ -6,7 +6,7 @@ var DLEVELS = {
     RELEASE: { value: 4}
 };
 
-var DLEVEL="INFO";
+var DLEVEL="RELEASE";
 
 function debugout( level, str ) {
   if( true ) {
