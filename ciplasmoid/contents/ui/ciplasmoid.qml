@@ -93,6 +93,7 @@ Item {
 				    onClicked:{
 					CITools.debugout("DETAILS"," dialog item clicked:"+ index);
 					listView.currentIndex = index;
+					dialogModel.get(index).unseen=0 
 				    }
 				}
 			    }
@@ -193,6 +194,10 @@ Item {
 
 			    onClicked:{
 				root.unseen=0
+				for (var i=0; i < dialogModel.count; i++) {
+				    dialogModel.get(i).unseen=0 
+				    return i;
+				}
 			    }
 			}
 			Text {

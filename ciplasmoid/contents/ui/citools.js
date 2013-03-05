@@ -108,7 +108,7 @@ function handleItems(items) {
 	}
 	
 	root.state=building ? "BUILDING" : allstate
-	root.unseen = parseInt(root.unseen)+allunseen
+	root.unseen = allunseen
 }
 
 function setName(source) {
