@@ -53,20 +53,20 @@ Item {
 	 // The delegate for each section header
 	Component {
 	    id: listHeading
-	//    Rectangle {
-	//    	width: 0
-	//    	height: 0
-	//    }    
 	    Rectangle {
-		width: dialog.width
-		height: childrenRect.height
-		color: "lightgray"
-		Text {
-		    text: section
-		    font.bold: true
-		    color: "white"
-		}
-	    }
+	    	width: 0
+	    	height: 0
+	    }    
+	//    Rectangle {
+	//	width: dialog.width
+	//	height: childrenRect.height
+	//	color: "lightgray"
+	//	Text {
+	//	    text: section
+	//	    font.bold: true
+	//	    color: "white"
+	//	}
+	//    }
 	}
 	
 	Component {
