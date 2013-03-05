@@ -34,6 +34,11 @@ Item {
 	}
 	
 	function toggleDialog() {
+		 h = 400		 
+		 if( dialogModel.count <= 10 )
+		   h = dialogModel.count*40
+		 scrollArea.height = h
+		 
 		 point = dialog.popupPosition(root)
 		 dialog.x= point.x
 		 dialog.y= point.y
@@ -90,7 +95,7 @@ Item {
                     }
                     Column {
                          width: listDelegate.width-40; height: 32;
-                         Text { text: title; color: "white"; font.pixelSize: parent.height / 4}
+                         Text { text: title; color: "white"; font.pixelSize: parent.height / 3}
                          Text { text:  jobstate; color: "white"; font.pixelSize: parent.height / 4 }
                     }
 		 }
