@@ -122,6 +122,13 @@ Item {
 			      Text { text:  jobstate; color: "white"; font.pixelSize: detailColumn.height / 4; horizontalAlignment: Text.AlignHRight }
 			    }
 			 }
+			 MouseArea {
+			    anchors.fill: detailColumn;                             
+
+			    onClicked:{
+				toggleDialog();
+			    }
+			}
                     }
 		 }
              }
