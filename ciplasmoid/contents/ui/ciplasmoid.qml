@@ -77,26 +77,39 @@ Item {
 
                  Row {
                     Column {
-		        Image {
-			  height: 32
-			  width: 32
-                        
-                          id: itemBtn                          
-                          source: CITools.STATES[jobstate].file
-                          MouseArea {
-                              anchors.fill: parent;                             
+			Item  {
+			    width: 32
+			    height: 32
+		    
+			    Image {
+				height: 32
+				width: 32
+			      
+				id: itemBtn                          
+				source: CITools.STATES[jobstate].file
+				MouseArea {
+				    anchors.fill: parent;                             
 
-                              onClicked:{
-                                  CITools.debugout("DETAILS"," dialog item clicked:"+ index);
-                                  entryList.currentIndex = index;
-                              }
-                          }
-                       }
+				    onClicked:{
+					CITools.debugout("DETAILS"," dialog item clicked:"+ index);
+					entryList.currentIndex = index;
+				    }
+				}
+			    }
+			    Text {
+				anchors.fill: parent; 
+				horizontalAlignment: Text.AlignHCenter
+				verticalAlignment: Text.AlignVCenter
+				text: unseen
+				color: "black"
+				//visible: (unseen>0)
+			    }
+			}
                     }
                     Column {
                          width: listDelegate.width-40; height: 32;
                          Text { text: title; color: "white"; font.pixelSize: parent.height / 3}
-                         Text { text:  jobstate; color: "white"; font.pixelSize: parent.height / 4 }
+                         Text { text:  number; color: "white"; font.pixelSize: parent.height / 4 }
                     }
 		 }
              }
