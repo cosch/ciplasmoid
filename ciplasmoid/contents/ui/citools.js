@@ -2,16 +2,21 @@ var DLEVELS = {
     DETAILS:{ value: 0},
     DEBUG: { value: 1 },
     INFO: { value: 2},
-    NONE: { value: 3}
+    NONE: { value: 3},
+    RELEASE: { value: 4}
 };
 
-var DLEVEL="INFO";
+var DLEVEL="RELEASE";
 
 function debugout( level, str ) {
   if( true ) {
       if( DLEVELS[DLEVEL].value<=DLEVELS[level].value )
 	console.debug( str )
   }
+}
+
+function isRelease() {
+  return ( DLEVELS[DLEVEL].value==DLEVELS["RELEASE"].value )   
 }
 
 // While a build is in progress the status is reported with a question mark
@@ -97,9 +102,13 @@ function handleItems(items) {
 		}
 		allunseen +=  myunseen
 	}
-
+	
+	if( !isRelease() ) {
+	  allunseen +=1
+	}
+	
 	root.state=building ? "BUILDING" : allstate
-	root.unseen = parseInt(root.unseen)+allunseen+1
+	root.unseen = parseInt(root.unseen)+allunseen
 }
 
 function setName(source) {

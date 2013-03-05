@@ -212,9 +212,13 @@ Item {
 	}
 	
 	function configChanged() {
-		root.source = plasmoid.readConfig("ciServerUrl")		
-		//root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
-		root.source = "https://ci.jenkins-ci.org/view/All"
+		root.source = plasmoid.readConfig("ciServerUrl")
+		
+		if( !CITools.isRelease() ) {
+		  root.source = "http://ci:8080/jenkins/view/WIN8_APPS"
+		  //root.source = "https://ci.jenkins-ci.org/view/All"
+		}
+		
 		CITools.debugout("DEBUG","configChanged: " + root.source)
 	}
 	
