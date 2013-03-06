@@ -6,7 +6,7 @@ var DLEVELS = {
     RELEASE: { value: 4}
 };
 
-var DLEVEL="RELEASE";
+var DLEVEL="INFO";
 
 function debugout( level, str ) {
   if( true ) {
@@ -25,8 +25,8 @@ var OKCodes = ["stable", "back to normal", "?"];
 var STATES = {
 	  INVALID: { id: -1, name: "", icon: ""},
 	  BUILDING: { id: 1, name: "building", icon: "run-build", file: "../images/run-build.png"},
-	  OK: { id: 2, name: "ok", icon: "weather-clear", file: "../images/success.png"},
-	  FAIL: { id: 3, name: "failed", icon: "weather-storm", file: "../images/failure.png"}
+	  FAIL: { id: 2, name: "failed", icon: "weather-storm", file: "../images/failure.png"},
+	  OK: { id: 3, name: "ok", icon: "weather-clear", file: "../images/success.png"}  
 	}
 	
 function getListModelIndexByTitle( title ) {
@@ -41,15 +41,17 @@ function sortDialogModel() {
     var n;
     var i;
     for (n=0; n < dialogModel.count; n++)
-    for (i=n+1; i < dialogModel.count; i++)
     {
-	debugout("DETAILS", " sort?:" + STATES[dialogModel.get(n).jobstate].name +"?"+STATES[dialogModel.get(i).jobstate].name)
-	if (STATES[dialogModel.get(n).jobstate].id < STATES[dialogModel.get(i).jobstate].id)
-        {
-	    debugout("DETAILS", " moved!")
-	    dialogModel.move(n, i, 1);
-            n=0; // Repeat at start since I can't swap items i and n
-        }
+      for (i=n+1; i < dialogModel.count; i++)
+      {
+	  debugout("DETAILS", " sort?:" + STATES[dialogModel.get(n).jobstate].name +"?"+STATES[dialogModel.get(i).jobstate].name)
+	  if (STATES[dialogModel.get(n).jobstate].id > STATES[dialogModel.get(i).jobstate].id)
+	  {
+	      debugout("DETAILS", " moved!")
+	      dialogModel.move(n, i, 1);
+	      n=0; // Repeat at start since I can't swap items i and n
+	  }
+      }
     }
 }
 
